@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from '@environments/environment';
-import { Model } from '@core/models/model';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 const BASE: string = env.serverUrl;
@@ -14,21 +13,15 @@ export class CrudService {
     return this.firestore.collection('personas').snapshotChanges();
   }
 
-  create(data) {
+  create(id, data) {
     return this.firestore.collection('personas').add(data);
   }
 
-  update(data) {
-    return this.firestore
-      .collection('personas')
-      .doc(data.payload.doc.id)
-      .set({ completed: true }, { merge: true });
+  update(id, data) {
+    return this.firestore.collection('personas').doc(id).set(data);
   }
 
-  delete(data) {
-    return this.firestore
-      .collection('personas')
-      .doc(data.payload.doc.id)
-      .delete();
+  delete(id) {
+    return this.firestore.collection('personas').doc(id).delete();
   }
 }

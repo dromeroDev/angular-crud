@@ -12,6 +12,8 @@ import { DialogFormComponent } from '@shared/components/dialogForm/dialogForm.co
 import { CrudService } from '@core/services/crud.service';
 import { Model } from '@core/models/model';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from '@shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-home',
@@ -24,10 +26,16 @@ export class HomeComponent implements OnInit {
   dataSourceFiltered: MatTableDataSource<Model>;
   resultsLength = 0;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private dialog: MatDialog, private crudService: CrudService) {
+  constructor(
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private crudService: CrudService
+  ) {}
+
+  ngOnInit() {
     this.displayedColumns = [
       'codigo',
       'nombre',
@@ -42,8 +50,6 @@ export class HomeComponent implements OnInit {
     this.getAll();
   }
 
-  ngOnInit() {}
-
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
@@ -54,10 +60,23 @@ export class HomeComponent implements OnInit {
     this.crudService.getAll().subscribe((res) => {
       this.dataSource = [];
       res.forEach((data) => {
-        this.dataSource.push(data.payload.doc.data());
+        const element: Model = {
+          id: data.payload.doc.id,
+          codigo: data.payload.doc.get('codigo'),
+          nombre: data.payload.doc.get('nombre'),
+          direccion: data.payload.doc.get('direccion'),
+          poblacion: data.payload.doc.get('poblacion'),
+          codigoPostal: data.payload.doc.get('codigoPostal'),
+          ciudad: data.payload.doc.get('ciudad'),
+          telefono: data.payload.doc.get('telefono'),
+          email: data.payload.doc.get('email'),
+        };
+        this.dataSource.push(element);
       });
       this.resultsLength = this.dataSource.length;
       this.initFilter();
+      this.initSort();
+      this.initPaginator();
     });
   }
 
@@ -71,28 +90,44 @@ export class HomeComponent implements OnInit {
       data.email.toLocaleLowerCase().indexOf(filter) != -1;
   }
 
-  openDialog(action: string): void {
+  initSort() {
+    this.dataSourceFiltered.sort = this.sort;
+  }
+
+  initPaginator() {
+    this.dataSourceFiltered.paginator = this.paginator;
+  }
+
+  openDialog(action: string, data: any): void {
     const dialogRef = this.dialog.open(DialogFormComponent, {
       width: '50%',
       data: {
         action: action,
+        person: data,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      this.ngOnInit();
     });
   }
 
   delete(data) {
-    console.log(data);
+    this.crudService.delete(data.id).then((res) => {
+      this.snackBar.openFromComponent(AlertComponent, {
+        duration: 5000,
+        data: {
+          message: 'Se elimino con exito!',
+        },
+      });
+    });
   }
 
   see(data) {
-    console.log(data);
+    this.openDialog('visibility', data);
   }
 
   edit(data) {
-    console.log(data);
+    this.openDialog('update', data);
   }
 }

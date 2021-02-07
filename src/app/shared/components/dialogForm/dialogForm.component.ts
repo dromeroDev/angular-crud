@@ -33,10 +33,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./dialogForm.component.scss'],
 })
 export class DialogFormComponent {
+  id: string;
   form: FormGroup;
   matcher = new MyErrorStateMatcher();
   response: Model | undefined;
   action: string;
+  readonly: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,16 +46,46 @@ export class DialogFormComponent {
     private crudService: CrudService,
     @Inject(MAT_DIALOG_DATA) public data: Object
   ) {
+    this.readonly = this.data['action'] === 'visibility';
+    this.id = this.getDataValue('id');
     this.form = this.formBuilder.group({
-      codigoFormControl: ['', [Validators.required]],
-      nombreFormControl: ['', [Validators.required]],
-      direccionFormControl: ['', [Validators.required]],
-      poblacionFormControl: ['', [Validators.required]],
-      codigoPostalFormControl: ['', [Validators.required]],
-      ciudadFormControl: ['', [Validators.required]],
-      telefonoFormControl: ['', [Validators.required]],
-      emailFormControl: ['', [Validators.required]],
+      codigoFormControl: [
+        { value: this.getDataValue('codigo'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(12)],
+      ],
+      nombreFormControl: [
+        { value: this.getDataValue('nombre'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(200)],
+      ],
+      direccionFormControl: [
+        { value: this.getDataValue('direccion'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(200)],
+      ],
+      poblacionFormControl: [
+        { value: this.getDataValue('poblacion'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(100)],
+      ],
+      codigoPostalFormControl: [
+        { value: this.getDataValue('codigoPostal'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(50)],
+      ],
+      ciudadFormControl: [
+        { value: this.getDataValue('ciudad'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(100)],
+      ],
+      telefonoFormControl: [
+        { value: this.getDataValue('telefono'), disabled: this.readonly },
+        [Validators.required, Validators.maxLength(20)],
+      ],
+      emailFormControl: [
+        { value: this.getDataValue('email'), disabled: this.readonly },
+        [Validators.required, Validators.email, Validators.maxLength(100)],
+      ],
     });
+  }
+
+  getDataValue(property: string) {
+    return this.data['person'] ? this.data['person'][property] : '';
   }
 
   onNoClick(): void {
@@ -72,9 +104,8 @@ export class DialogFormComponent {
       email: this.form.get('emailFormControl')?.value,
     };
 
-    this.crudService[method](body).then(
+    this.crudService[method](this.id, body).then(
       (res) => {
-        console.log(res);
         this.onNoClick();
       },
       (err) => {

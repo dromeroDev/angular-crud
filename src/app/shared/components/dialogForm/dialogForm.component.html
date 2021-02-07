@@ -10,8 +10,11 @@
           formControlName="codigoFormControl"
           [errorStateMatcher]="matcher"
         />
-        <mat-error *ngIf="form.get('codigoFormControl').invalid">
+        <mat-error *ngIf="form.get('codigoFormControl').hasError('required')">
           El código es requerido
+        </mat-error>
+        <mat-error *ngIf="form.get('codigoFormControl').hasError('maxlength')">
+          Se excedio del máximo de caracteres
         </mat-error>
       </mat-form-field>
       <mat-form-field class="col-xs-6">
@@ -22,8 +25,11 @@
           formControlName="nombreFormControl"
           [errorStateMatcher]="matcher"
         />
-        <mat-error *ngIf="form.get('nombreFormControl').invalid">
+        <mat-error *ngIf="form.get('nombreFormControl').hasError('required')">
           El nombre es requerido
+        </mat-error>
+        <mat-error *ngIf="form.get('nombreFormControl').hasError('maxlength')">
+          Se excedio del máximo de caracteres
         </mat-error>
       </mat-form-field>
     </div>
@@ -37,8 +43,15 @@
             formControlName="direccionFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('direccionFormControl').invalid">
+          <mat-error
+            *ngIf="form.get('direccionFormControl').hasError('required')"
+          >
             La dirección es requerida
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('direccionFormControl').hasError('maxlength')"
+          >
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -53,8 +66,15 @@
             formControlName="poblacionFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('poblacionFormControl').invalid">
+          <mat-error
+            *ngIf="form.get('poblacionFormControl').hasError('required')"
+          >
             La población es requerida
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('poblacionFormControl').hasError('maxlength')"
+          >
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -67,8 +87,15 @@
             formControlName="codigoPostalFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('codigoPostalFormControl').invalid">
+          <mat-error
+            *ngIf="form.get('codigoPostalFormControl').hasError('required')"
+          >
             El código postal es requerido
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('codigoPostalFormControl').hasError('maxlength')"
+          >
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -83,8 +110,13 @@
             formControlName="ciudadFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('ciudadFormControl').invalid">
+          <mat-error *ngIf="form.get('ciudadFormControl').hasError('required')">
             La ciudad es requerida
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('ciudadFormControl').hasError('maxlength')"
+          >
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -97,8 +129,15 @@
             formControlName="telefonoFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('telefonoFormControl').invalid">
+          <mat-error
+            *ngIf="form.get('telefonoFormControl').hasError('required')"
+          >
             El telefono es requerido
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('telefonoFormControl').hasError('maxlength')"
+          >
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -111,15 +150,21 @@
             formControlName="emailFormControl"
             [errorStateMatcher]="matcher"
           />
-          <mat-error *ngIf="form.get('emailFormControl').invalid">
+          <mat-error *ngIf="form.get('emailFormControl').hasError('required')">
             El email es requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('emailFormControl').hasError('email')">
+            Ingrese un email valido
+          </mat-error>
+          <mat-error *ngIf="form.get('emailFormControl').hasError('maxlength')">
+            Se excedio del máximo de caracteres
           </mat-error>
         </mat-form-field>
       </div>
     </div>
   </form>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions *ngIf="!readonly">
   <button mat-raised-button (click)="onNoClick()">Cancelar</button>
   <button
     mat-raised-button
@@ -129,4 +174,7 @@
   >
     Guardar
   </button>
+</div>
+<div mat-dialog-actions *ngIf="readonly">
+  <button mat-raised-button (click)="onNoClick()">Volver</button>
 </div>

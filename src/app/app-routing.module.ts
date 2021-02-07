@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { MaintenanceComponent } from './shared/components/maintenance/maintenance.component';
 
 const routes: Routes = [
   {
@@ -16,9 +15,6 @@ const routes: Routes = [
       },
     ],
   },
-
-  // Not lazy-loaded routes
-  { path: 'maintenance', component: MaintenanceComponent },
 
   // Not found
   { path: '**', redirectTo: 'home' },
