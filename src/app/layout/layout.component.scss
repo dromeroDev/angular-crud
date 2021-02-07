@@ -1,0 +1,5 @@
+@import "./../../assets/partials/variables";
+.container-layout {
+  background-color: $black-main;
+  height: calc(100vh - #{$header-height} - #{$footer-height});
+}

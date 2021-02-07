@@ -1,0 +1,9 @@
+mat-toolbar {
+  height: 2vh;
+  mat-toolbar-row {
+    justify-content: center;
+    small {
+      font-size: small;
+    }
+  }
+}

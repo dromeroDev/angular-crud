@@ -1,0 +1,132 @@
+<h1 mat-dialog-title>{{ data["action"] | titlecase }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field class="col-xs-6">
+        <mat-label>Código</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="codigoFormControl"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="form.get('codigoFormControl').invalid">
+          El código es requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-xs-6">
+        <mat-label>Nombre</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="nombreFormControl"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="form.get('nombreFormControl').invalid">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <mat-form-field>
+          <mat-label>Dirección</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="direccionFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('direccionFormControl').invalid">
+            La dirección es requerida
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <mat-form-field>
+          <mat-label>Población</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="poblacionFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('poblacionFormControl').invalid">
+            La población es requerida
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6">
+        <mat-form-field>
+          <mat-label>Código Postal</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="codigoPostalFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('codigoPostalFormControl').invalid">
+            El código postal es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <mat-form-field>
+          <mat-label>Ciudad</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="ciudadFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('ciudadFormControl').invalid">
+            La ciudad es requerida
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-4">
+        <mat-form-field>
+          <mat-label>Telefono</mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="telefonoFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('telefonoFormControl').invalid">
+            El telefono es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-4">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="emailFormControl"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.get('emailFormControl').invalid">
+            El email es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save(data['action'])"
+    [disabled]="form.invalid"
+  >
+    Guardar
+  </button>
+</div>
