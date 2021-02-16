@@ -11,6 +11,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { CrudService } from '@core/services/crud.service';
 import { Model } from '@core/models/model';
+import { SpinnerService } from '@core/spinner/spinner.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -44,6 +45,7 @@ export class DialogFormComponent {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<DialogFormComponent>,
     private crudService: CrudService,
+    private spinnerService: SpinnerService,
     @Inject(MAT_DIALOG_DATA) public data: Object
   ) {
     this.readonly = this.data['action'] === 'visibility';
@@ -89,10 +91,12 @@ export class DialogFormComponent {
   }
 
   onNoClick(): void {
+    this.spinnerService.hide();
     this.dialogRef.close();
   }
 
   save(method) {
+    this.spinnerService.show();
     const body = {
       codigo: this.form.get('codigoFormControl')?.value,
       nombre: this.form.get('nombreFormControl')?.value,

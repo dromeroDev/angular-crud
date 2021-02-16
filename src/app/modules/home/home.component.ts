@@ -14,6 +14,7 @@ import { Model } from '@core/models/model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '@shared/components/alert/alert.component';
+import { SpinnerService } from '@core/spinner/spinner.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private crudService: CrudService
+    private crudService: CrudService,
+    private spinnerService: SpinnerService
   ) {}
 
   ngOnInit() {
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
   }
 
   getAll() {
+    this.spinnerService.show();
     this.crudService.getAll().subscribe((res) => {
       this.dataSource = [];
       res.forEach((data) => {
@@ -77,6 +80,7 @@ export class HomeComponent implements OnInit {
       this.initFilter();
       this.initSort();
       this.initPaginator();
+      this.spinnerService.hide();
     });
   }
 
@@ -113,7 +117,9 @@ export class HomeComponent implements OnInit {
   }
 
   delete(data) {
+    this.spinnerService.show();
     this.crudService.delete(data.id).then((res) => {
+      this.spinnerService.hide();
       this.snackBar.openFromComponent(AlertComponent, {
         duration: 5000,
         data: {
