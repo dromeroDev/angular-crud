@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from '@environments/environment';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-const BASE: string = env.serverUrl;
 @Injectable({
   providedIn: 'root',
 })
